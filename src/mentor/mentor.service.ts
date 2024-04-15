@@ -106,7 +106,7 @@ export class MentorService {
     };
   }
   async register(dto: MentorDto) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.mentor.findUnique({
       where: {
         email: dto.email,
       },
@@ -114,7 +114,7 @@ export class MentorService {
 
     if (user) throw new ConflictException('Email duplicated');
 
-    const newUser = await this.prisma.user.create({
+    const newUser = await this.prisma.mentor.create({
       data: {
         ...dto,
         password: await hash(dto.password, 10),

@@ -13,6 +13,7 @@ import { OtpModule } from './otp/otp.module';
 import { MailerService } from './mailer/mailer.service';
 import { MediaModule } from './media/media.module';
 import { FastifyMulterModule } from '@nest-lab/fastify-multer';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { FastifyMulterModule } from '@nest-lab/fastify-multer';
     OtpModule,
     MediaModule,
     FastifyMulterModule,
+    CourseModule,
   ],
   controllers: [AppController],
   providers: [
