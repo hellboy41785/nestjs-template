@@ -1,10 +1,18 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 
 import { LoginDto, MentorDto } from './dto/mentor.dto';
 import { RefreshJwtGuard } from '../guards/refresh.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MentorService } from './mentor.service';
 import { VerifyOtpDto } from 'src/otp/dto/otp.dto';
+import { JwtMentor } from 'src/guards/jwt.mentor.guard';
 @ApiTags('mentor')
 @Controller('mentor')
 export class MentorController {
@@ -32,5 +40,12 @@ export class MentorController {
   @Post('verify')
   async verifyEmail(@Body() dto: VerifyOtpDto) {
     return await this.mentorService.verifyEmail(dto);
+  }
+
+  @UseGuards(JwtMentor)
+  @ApiBearerAuth()
+  @Get('profile')
+  async profile(@Request() req) {
+    return await this.mentorService.profile(req.user);
   }
 }

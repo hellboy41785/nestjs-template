@@ -24,6 +24,7 @@ export class MentorService {
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
     const payload = {
+      id: user.id,
       email: user.email,
       sub: {
         name: user.name,
@@ -58,15 +59,17 @@ export class MentorService {
         email: dto.email,
       },
     });
-    const payload = {
-      email: dto.email,
-      sub: {
-        name: dto.name,
-      },
-    };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = user ?? { password: null };
-    if (user)
+
+    if (user) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user ?? { password: null };
+      const payload = {
+        id: user.id,
+        email: dto.email,
+        sub: {
+          name: dto.name,
+        },
+      };
       return {
         user: result,
         backendTokens: {
@@ -81,6 +84,7 @@ export class MentorService {
           expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
         },
       };
+    }
 
     const newUser = await this.prisma.mentor.create({
       data: {
@@ -89,7 +93,14 @@ export class MentorService {
     });
     if (!newUser) throw new ConflictException();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ...newResult } = newUser;
+    const { password, ...newResult } = newUser;
+    const payload = {
+      id: newUser.id,
+      email: dto.email,
+      sub: {
+        name: dto.name,
+      },
+    };
     return {
       user: newResult,
       backendTokens: {
@@ -134,6 +145,24 @@ export class MentorService {
     };
   }
 
+  async profile(req: Request) {
+    const mentor: string = req['id'];
+    const user = await this.prisma.mentor.findUnique({
+      where: {
+        id: mentor,
+      },
+      include: {
+        bio: true,
+        availability: true,
+      },
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = user;
+
+    return result;
+  }
+
   async validateUser(dto: LoginDto) {
     const user = await this.prisma.mentor.findUnique({
       where: {
@@ -151,6 +180,7 @@ export class MentorService {
 
   async refreshToken(user: any) {
     const payload = {
+      id: user.id,
       email: user.email,
       sub: user.sub,
     };

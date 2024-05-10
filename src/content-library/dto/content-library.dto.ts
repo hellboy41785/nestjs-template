@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
-export class CreateCourseDto {
+export class CreateContentLibraryDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -15,19 +15,14 @@ export class CreateCourseDto {
   @ApiProperty()
   @IsString()
   @IsUrl()
-  image: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsUrl()
   video: string;
 
   @ApiProperty()
   @IsString()
   @IsUrl()
-  videoThumbnail: string;
+  thumbnail: string;
 }
-export class UpdateCourseDto {
+export class UpdateContentLibraryDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -44,17 +39,11 @@ export class UpdateCourseDto {
   @IsString()
   @IsUrl()
   @IsOptional()
-  image: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsUrl()
-  @IsOptional()
   video: string;
 
   @ApiProperty()
   @IsString()
   @IsUrl()
   @IsOptional()
-  videoThumbnail: string;
+  thumbnail: string;
 }

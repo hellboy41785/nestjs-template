@@ -67,6 +67,7 @@ export class UserService {
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
     const payload = {
+      id: user.id,
       email: user.email,
       sub: {
         name: user.name,
@@ -102,15 +103,17 @@ export class UserService {
         email: dto.email,
       },
     });
-    const payload = {
-      email: dto.email,
-      sub: {
-        name: dto.name,
-      },
-    };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = user ?? { password: null };
-    if (user)
+
+    if (user) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user ?? { password: null };
+      const payload = {
+        id: user.id,
+        email: dto.email,
+        sub: {
+          name: dto.name,
+        },
+      };
       return {
         user: result,
         backendTokens: {
@@ -125,6 +128,7 @@ export class UserService {
           expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
         },
       };
+    }
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -133,9 +137,16 @@ export class UserService {
     });
     if (!newUser) throw new ConflictException();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ...newResult } = newUser;
+    const { password, ...result } = newUser ?? { password: null };
+    const payload = {
+      id: newUser.id,
+      email: dto.email,
+      sub: {
+        name: dto.name,
+      },
+    };
     return {
-      user: newResult,
+      user: result,
       backendTokens: {
         accessToken: await this.jwtService.signAsync(payload, {
           expiresIn: process.env.ACCESS_TOKEN_EXPIRY_DATE,

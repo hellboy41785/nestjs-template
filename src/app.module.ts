@@ -13,7 +13,11 @@ import { OtpModule } from './otp/otp.module';
 import { MailerService } from './mailer/mailer.service';
 import { MediaModule } from './media/media.module';
 import { FastifyMulterModule } from '@nest-lab/fastify-multer';
-import { CourseModule } from './course/course.module';
+import { ContentLibraryModule } from './content-library/content-library.module';
+import { AvailabilityModule } from './availability/availability.module';
+import { BioModule } from './bio/bio.module';
+import { AdminModule } from './admin/admin.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -26,7 +30,16 @@ import { CourseModule } from './course/course.module';
     OtpModule,
     MediaModule,
     FastifyMulterModule,
-    CourseModule,
+
+    ContentLibraryModule,
+
+    AvailabilityModule,
+
+    BioModule,
+
+    AdminModule,
+
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [

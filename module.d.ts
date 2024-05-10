@@ -2,6 +2,7 @@ declare namespace NodeJS {
   export interface ProcessEnv {
     DATABASE_URL: string;
     jwtSecretKey: string;
+    jwtAdminSecretKey: string;
     jwtRefreshTokenKey: string;
     ACCESS_TOKEN_EXPIRY_DATE: string;
     REFRESH_TOKEN_EXPIRY_DATE: string;
@@ -22,5 +23,6 @@ declare namespace NodeJS {
     MINIO_SECRET_KEY: string;
     MINIO_USE_SSL: string;
     MINIO_BUCKET_NAME: string;
+    PORT: string;
   }
 }

@@ -1,6 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 import { PrismaService } from 'src/utils/prisma.service';
+import {
+  CreateContentLibraryDto,
+  UpdateContentLibraryDto,
+} from './dto/content-library.dto';
 import { Request } from 'express';
 
 interface MentorPayload {
@@ -13,57 +16,59 @@ interface MentorPayload {
 }
 
 @Injectable()
-export class CourseService {
+export class ContentLibraryService {
   constructor(private prisma: PrismaService) {}
-  async createCourse(req: Request, dto: CreateCourseDto) {
+  async createContentLibrary(req: Request, dto: CreateContentLibraryDto) {
     const mentor: MentorPayload = req['user'];
     const user = await this.prisma.mentor.findUnique({
       where: {
         email: mentor.email,
       },
     });
-    const course = await this.prisma.course.create({
+    const contentLibrary = await this.prisma.contentLibrary.create({
       data: {
         ...dto,
         mentorId: user.id,
       },
     });
 
-    return course;
+    return contentLibrary;
   }
-  async updateCourse(req: Request, dto: UpdateCourseDto) {
-    const courseId = req.query.id as string;
-    if (!courseId) throw new UnauthorizedException('Course id is not provided');
-    const course = await this.prisma.course.update({
+  async updateContentLibrary(req: Request, dto: UpdateContentLibraryDto) {
+    const contentLibraryId = req.query.id as string;
+    if (!contentLibraryId)
+      throw new UnauthorizedException('ContentLibrary id is not provided');
+    const contentLibrary = await this.prisma.contentLibrary.update({
       where: {
-        id: courseId,
+        id: contentLibraryId,
       },
       data: {
         ...dto,
       },
     });
 
-    return course;
+    return contentLibrary;
   }
-  async deleteCourse(req: Request) {
-    const courseId = req.query.id as string;
-    if (!courseId) throw new UnauthorizedException('Course id is not provided');
-    const course = await this.prisma.course.delete({
+  async deleteContentLibrary(req: Request) {
+    const contentLibraryId = req.query.id as string;
+    if (!contentLibraryId)
+      throw new UnauthorizedException('ContentLibrary id is not provided');
+    const contentLibrary = await this.prisma.contentLibrary.delete({
       where: {
-        id: courseId,
+        id: contentLibraryId,
       },
     });
 
-    return course;
+    return contentLibrary;
   }
-  async getCourses(req: Request) {
+  async getContentLibraries(req: Request) {
     const mentor: MentorPayload = req['user'];
     const user = await this.prisma.mentor.findUnique({
       where: {
         email: mentor.email,
       },
     });
-    const courses = await this.prisma.course.findMany({
+    const courses = await this.prisma.contentLibrary.findMany({
       where: {
         mentorId: user.id,
       },
@@ -74,14 +79,14 @@ export class CourseService {
 
     return courses;
   }
-  async getCoursesById(id: string) {
-    const course = await this.prisma.course.findUnique({
+  async getContentLibrariesById(id: string) {
+    const contentLibrary = await this.prisma.contentLibrary.findUnique({
       where: {
         id: id,
       },
     });
 
-    return course;
+    return contentLibrary;
   }
 
   async validateUser(email: string) {
