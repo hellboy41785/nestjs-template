@@ -24,5 +24,8 @@ declare namespace NodeJS {
     MINIO_USE_SSL: string;
     MINIO_BUCKET_NAME: string;
     PORT: string;
+    SUPABASE_URL: string;
+    SUPABASE_KEY: string;
+    BUCKET_NAME: string;
   }
 }
