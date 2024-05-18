@@ -27,5 +27,8 @@ declare namespace NodeJS {
     SUPABASE_URL: string;
     SUPABASE_KEY: string;
     BUCKET_NAME: string;
+    OPEN_AI_SECRET_KEY: string;
+    PDF_SERVICES_CLIENT_ID: string;
+    PDF_SERVICES_CLIENT_SECRET: string;
   }
 }

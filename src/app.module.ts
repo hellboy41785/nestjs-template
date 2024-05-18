@@ -18,6 +18,7 @@ import { AvailabilityModule } from './availability/availability.module';
 import { BioModule } from './bio/bio.module';
 import { AdminModule } from './admin/admin.module';
 import { ServicesModule } from './services/services.module';
+import { ResumeModule } from './resume/resume.module';
 
 @Module({
   imports: [
@@ -40,6 +41,8 @@ import { ServicesModule } from './services/services.module';
     AdminModule,
 
     ServicesModule,
+
+    ResumeModule,
   ],
   controllers: [AppController],
   providers: [
