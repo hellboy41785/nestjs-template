@@ -22,7 +22,9 @@ export class MediaService {
 
     const { data, error } = (await this.supabase.storage
       .from(process.env.BUCKET_NAME)
-      .upload(fileName, file.buffer)) as IMedia;
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype,
+      })) as IMedia;
     if (error) throw new BadRequestException(error);
 
     return {
@@ -39,7 +41,9 @@ export class MediaService {
 
       const { data, error } = (await this.supabase.storage
         .from(process.env.BUCKET_NAME)
-        .upload(fileName, file.buffer)) as IMedia;
+        .upload(fileName, file.buffer, {
+          contentType: file.mimetype,
+        })) as IMedia;
       if (error) throw new BadRequestException(error);
       return `${process.env.SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
     });

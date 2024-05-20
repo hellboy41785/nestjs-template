@@ -2,17 +2,21 @@ import { Injectable, Logger } from '@nestjs/common';
 import { OpenAIService } from 'src/utils/openai.service';
 import * as pdfParse from 'pdf-parse';
 import { system_message, user_message } from 'src/utils/gpt';
+import { MediaService } from 'src/media/media.service';
 
 @Injectable()
 export class ResumeService {
   private openai = this.openAIService.getClient();
   private readonly logger = new Logger(ResumeService.name);
-  constructor(private openAIService: OpenAIService) {}
+  constructor(
+    private openAIService: OpenAIService,
+    private media: MediaService,
+  ) {}
 
   async resumeReviewer(file: Express.Multer.File) {
     try {
       const text = await this.pdfToText(file);
-
+      const resume = await this.media.uploadFile(file, 'resume');
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4-turbo',
         response_format: { type: 'json_object' },
@@ -32,7 +36,10 @@ export class ResumeService {
         ],
       });
 
-      return response.choices[0].message.content;
+      return {
+        resume_url: resume.url,
+        resume_report: JSON.parse(response.choices[0].message.content),
+      };
     } catch (error) {
       this.logger.error('Error reviewing resume', error.stack);
       throw new Error('Failed to review resume');

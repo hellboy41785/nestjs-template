@@ -48,6 +48,7 @@
     "minio": "^7.1.3",
     "nodemailer": "^6.9.13",
     "openai": "^4.47.1",
+    "pdf-parse": "^1.1.1",
     "pdfreader": "^3.0.2",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
