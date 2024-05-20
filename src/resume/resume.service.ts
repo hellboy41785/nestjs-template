@@ -1,4 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { OpenAIService } from 'src/utils/openai.service';
 import * as pdfParse from 'pdf-parse';
 import { system_message, user_message } from 'src/utils/gpt';
@@ -16,7 +20,7 @@ export class ResumeService {
   async resumeReviewer(file: Express.Multer.File) {
     try {
       const text = await this.pdfToText(file);
-      const resume = await this.media.uploadFile(file, 'resume');
+
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4-turbo',
         response_format: { type: 'json_object' },
@@ -35,14 +39,20 @@ export class ResumeService {
           },
         ],
       });
+      const report = JSON.parse(response.choices[0].message.content);
+
+      if (report.message === 'Invalid resume') {
+        throw new UnprocessableEntityException(report);
+      }
+
+      const resume = await this.media.uploadFile(file, 'resume');
 
       return {
         resume_url: resume.url,
-        resume_report: JSON.parse(response.choices[0].message.content),
+        resume_report: report,
       };
     } catch (error) {
-      this.logger.error('Error reviewing resume', error.stack);
-      throw new Error('Failed to review resume');
+      throw new UnprocessableEntityException({ message: 'Invalid pdf type' });
     }
   }
 
