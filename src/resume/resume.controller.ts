@@ -4,7 +4,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ResumeService } from './resume.service';
+import { ResumeService } from './resume.service.js';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 
@@ -16,7 +16,7 @@ export class ResumeController {
   constructor(private resume: ResumeService) {}
 
   @Post('/reviewer')
-  @ApiOperation({ summary: 'Uploads a pdf file' })
+  @ApiOperation({ summary: 'Uploads a pdf or docx file' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: FILE_SIZE } }))
   @ApiBody({
@@ -38,7 +38,7 @@ export class ResumeController {
   }
 
   @Post('/pdf-to-txt')
-  @ApiOperation({ summary: 'Uploads a pdf file' })
+  @ApiOperation({ summary: 'Uploads a pdf or docx file' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: FILE_SIZE } }))
   @ApiBody({

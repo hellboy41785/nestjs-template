@@ -1,17 +1,13 @@
-import {
-  Injectable,
-  Logger,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { OpenAIService } from 'src/utils/openai.service';
 import * as pdfParse from 'pdf-parse';
 import { system_message, user_message } from 'src/utils/gpt';
 import { MediaService } from 'src/media/media.service';
+import * as mammoth from 'mammoth';
 
 @Injectable()
 export class ResumeService {
   private openai = this.openAIService.getClient();
-  private readonly logger = new Logger(ResumeService.name);
   constructor(
     private openAIService: OpenAIService,
     private media: MediaService,
@@ -19,7 +15,7 @@ export class ResumeService {
 
   async resumeReviewer(file: Express.Multer.File) {
     try {
-      const text = await this.pdfToText(file);
+      const data = await this.pdfToText(file);
 
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4-turbo',
@@ -32,7 +28,7 @@ export class ResumeService {
           {
             role: 'user',
             content: `
-             ${text}
+             ${data.text}
              
              ${user_message}
             `,
@@ -49,6 +45,7 @@ export class ResumeService {
 
       return {
         resume_url: resume.url,
+        type: data.type,
         resume_report: report,
       };
     } catch (error) {
@@ -58,10 +55,27 @@ export class ResumeService {
 
   async pdfToText(file: Express.Multer.File) {
     try {
-      const data = await pdfParse(file.buffer);
-      return data.text;
+      if (file.mimetype === 'application/pdf') {
+        const data = await pdfParse(file.buffer);
+        return {
+          type: 'pdf',
+          text: data.text,
+        };
+      } else {
+        const text = await mammoth.extractRawText({ buffer: file.buffer });
+
+        const lines = text.value.split('\n');
+
+        return {
+          type: 'docx',
+          text: lines,
+        };
+      }
     } catch (error) {
-      throw new Error('Failed to extract text from PDF');
+      console.log(error);
+      throw new UnprocessableEntityException({
+        message: 'Invalid pdf or docx type',
+      });
     }
   }
 }
