@@ -1,10 +1,12 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { OpenAIService } from 'src/utils/openai.service';
-import * as pdfParse from 'pdf-parse';
 import { system_message, user_message } from 'src/utils/gpt';
 import { MediaService } from 'src/media/media.service';
 import * as mammoth from 'mammoth';
+import * as puppeteer from 'puppeteer';
+import * as pdfParse from 'pdf-parse';
 
+import { Readable } from 'stream';
 @Injectable()
 export class ResumeService {
   private openai = this.openAIService.getClient();
@@ -41,6 +43,17 @@ export class ResumeService {
         throw new UnprocessableEntityException(report);
       }
 
+      if (data.type === 'docx') {
+        const docxToPdf = await this.docxToPdf(file);
+        const resume = await this.media.uploadFile(docxToPdf, 'resume');
+
+        return {
+          resume_url: resume.url,
+          type: docxToPdf.mimetype,
+          resume_report: report,
+        };
+      }
+
       const resume = await this.media.uploadFile(file, 'resume');
 
       return {
@@ -72,9 +85,45 @@ export class ResumeService {
         };
       }
     } catch (error) {
-      console.log(error);
       throw new UnprocessableEntityException({
         message: 'Invalid pdf or docx type',
+      });
+    }
+  }
+
+  async docxToPdf(file: Express.Multer.File) {
+    try {
+      const { value: htmlContent } = await mammoth.convertToHtml({
+        buffer: file.buffer,
+      });
+      const browser = await puppeteer.launch({
+        headless: false,
+        args: ['--headless'],
+      });
+      const page = await browser.newPage();
+      await page.setContent(htmlContent);
+      const pdfBuffer = await page.pdf();
+      await browser.close();
+
+      const stream = Readable.from(pdfBuffer);
+
+      const pdfFile: Express.Multer.File = {
+        fieldname: file.fieldname,
+        originalname: `${file.originalname.replace(/\.[^/.]+$/, '')}.pdf`,
+        encoding: '7bit',
+        mimetype: 'application/pdf',
+        size: pdfBuffer.length,
+        destination: '', // Destination is not applicable for this use case
+        filename: `${file.originalname.replace(/\.[^/.]+$/, '')}.pdf`,
+        path: '', // Path is not applicable since we're not saving the file
+        buffer: pdfBuffer,
+        stream: stream,
+      };
+
+      return pdfFile;
+    } catch (error) {
+      throw new UnprocessableEntityException({
+        message: 'Invalid  docx type',
       });
     }
   }
