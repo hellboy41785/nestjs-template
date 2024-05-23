@@ -2,9 +2,9 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { OpenAIService } from 'src/utils/openai.service';
 import { system_message, user_message } from 'src/utils/gpt';
 import { MediaService } from 'src/media/media.service';
-import * as mammoth from 'mammoth';
-import * as puppeteer from 'puppeteer';
-import * as pdfParse from 'pdf-parse';
+// import * as mammoth from 'mammoth';
+// import * as puppeteer from 'puppeteer';
+// import * as pdfParse from 'pdf-parse';
 
 import { Readable } from 'stream';
 @Injectable()
@@ -17,7 +17,7 @@ export class ResumeService {
 
   async resumeReviewer(file: Express.Multer.File) {
     try {
-      const data = await this.pdfToText(file);
+      const text = await this.documentToText(file);
 
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4-turbo',
@@ -30,8 +30,8 @@ export class ResumeService {
           {
             role: 'user',
             content: `
-             ${data.text}
-             
+             ${text}
+
              ${user_message}
             `,
           },
@@ -43,22 +43,10 @@ export class ResumeService {
         throw new UnprocessableEntityException(report);
       }
 
-      if (data.type === 'docx') {
-        const docxToPdf = await this.docxToPdf(file);
-        const resume = await this.media.uploadFile(docxToPdf, 'resume');
-
-        return {
-          resume_url: resume.url,
-          type: docxToPdf.mimetype,
-          resume_report: report,
-        };
-      }
-
-      const resume = await this.media.uploadFile(file, 'resume');
+      const resume = await this.pdfUrl(file);
 
       return {
         resume_url: resume.url,
-        type: data.type,
         resume_report: report,
       };
     } catch (error) {
@@ -66,23 +54,47 @@ export class ResumeService {
     }
   }
 
-  async pdfToText(file: Express.Multer.File) {
+  async documentToText(file: Express.Multer.File) {
     try {
       if (file.mimetype === 'application/pdf') {
-        const data = await pdfParse(file.buffer);
-        return {
-          type: 'pdf',
-          text: data.text,
+        const formdata = new FormData();
+        const fileBlob = new Blob([file.buffer], { type: file.mimetype });
+        formdata.append('fileInput', fileBlob, file.originalname);
+        formdata.append('outputFormat', 'txt');
+        const options = {
+          method: 'POST',
+          body: formdata,
+          headers: {
+            'X-API-KEY': process.env.PDF_API_KEY,
+          },
         };
+        const res = await fetch(
+          `${process.env.PDF_API_URL}/convert/pdf/text`,
+          options,
+        );
+        const data = await res.text();
+
+        return data;
       } else {
-        const text = await mammoth.extractRawText({ buffer: file.buffer });
-
-        const lines = text.value.split('\n');
-
-        return {
-          type: 'docx',
-          text: lines,
+        const docx = await this.docxToPdf(file);
+        const formdata = new FormData();
+        const fileBlob = new Blob([docx.buffer], { type: docx.mimetype });
+        formdata.append('fileInput', fileBlob, docx.originalname);
+        formdata.append('outputFormat', 'txt');
+        const options = {
+          method: 'POST',
+          body: formdata,
+          headers: {
+            'X-API-KEY': process.env.PDF_API_KEY,
+          },
         };
+        const res = await fetch(
+          `${process.env.PDF_API_URL}/convert/pdf/text`,
+          options,
+        );
+        const data = await res.text();
+
+        return data;
       }
     } catch (error) {
       throw new UnprocessableEntityException({
@@ -93,20 +105,22 @@ export class ResumeService {
 
   async docxToPdf(file: Express.Multer.File) {
     try {
-      const { value: htmlContent } = await mammoth.convertToHtml({
-        buffer: file.buffer,
-      });
-      const browser = await puppeteer.launch({
-        headless: false,
-        args: ['--headless'],
-      });
-      const page = await browser.newPage();
-      await page.setContent(htmlContent);
-      const pdfBuffer = await page.pdf();
-      await browser.close();
-
+      const formdata = new FormData();
+      const fileBlob = new Blob([file.buffer], { type: file.mimetype });
+      formdata.append('fileInput', fileBlob, file.originalname);
+      const options = {
+        method: 'POST',
+        body: formdata,
+        headers: {
+          'X-API-KEY': process.env.PDF_API_KEY,
+        },
+      };
+      const res = await fetch(
+        `${process.env.PDF_API_URL}/convert/file/pdf`,
+        options,
+      );
+      const pdfBuffer = Buffer.from(await res.arrayBuffer());
       const stream = Readable.from(pdfBuffer);
-
       const pdfFile: Express.Multer.File = {
         fieldname: file.fieldname,
         originalname: `${file.originalname.replace(/\.[^/.]+$/, '')}.pdf`,
@@ -119,12 +133,23 @@ export class ResumeService {
         buffer: pdfBuffer,
         stream: stream,
       };
-
       return pdfFile;
     } catch (error) {
+      console.log(error);
       throw new UnprocessableEntityException({
         message: 'Invalid  docx type',
       });
+    }
+  }
+
+  async pdfUrl(file: Express.Multer.File) {
+    if (file.mimetype === 'application/pdf') {
+      const resume = await this.media.uploadFile(file, 'resume');
+      return resume;
+    } else {
+      const docxToPdf = await this.docxToPdf(file);
+      const resume = await this.media.uploadFile(docxToPdf, 'resume');
+      return resume;
     }
   }
 }

@@ -30,5 +30,7 @@ declare namespace NodeJS {
     OPEN_AI_SECRET_KEY: string;
     PDF_SERVICES_CLIENT_ID: string;
     PDF_SERVICES_CLIENT_SECRET: string;
+    PDF_API_URL: string;
+    PDF_API_KEY: string;
   }
 }

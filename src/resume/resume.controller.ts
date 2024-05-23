@@ -9,7 +9,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import { MediaService } from 'src/media/media.service';
 
-const FILE_SIZE = 25 * 1024 * 1024;
+const FILE_SIZE = 2 * 1024 * 1024;
 
 @ApiTags('resume')
 @Controller('resume')
@@ -20,7 +20,12 @@ export class ResumeController {
   ) {}
 
   @Post('/reviewer')
-  @ApiOperation({ summary: 'Uploads a pdf or docx file' })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: FILE_SIZE },
+    }),
+  )
+  @ApiOperation({ summary: 'Only PDF and DOCX files are allowed' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: FILE_SIZE } }))
   @ApiBody({
@@ -32,7 +37,7 @@ export class ResumeController {
           type: 'string',
           format: 'binary',
           maxLength: FILE_SIZE,
-          description: 'Maximum file size is 25 MB',
+          description: 'Maximum file size is 2 MB',
         },
       },
     },
@@ -41,8 +46,13 @@ export class ResumeController {
     return await this.resume.resumeReviewer(file);
   }
 
-  @Post('/pdf-to-txt')
-  @ApiOperation({ summary: 'Uploads a pdf or docx file' })
+  @Post('/document-to-text')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: FILE_SIZE },
+    }),
+  )
+  @ApiOperation({ summary: 'Only PDF and DOCX files are allowed' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: FILE_SIZE } }))
   @ApiBody({
@@ -54,16 +64,22 @@ export class ResumeController {
           type: 'string',
           format: 'binary',
           maxLength: FILE_SIZE,
-          description: 'Maximum file size is 25 MB',
+          description: 'Maximum file size is 2 MB',
         },
       },
     },
   })
-  async pdfToTxt(@UploadedFile() file: Express.Multer.File) {
-    return await this.resume.pdfToText(file);
+  async documentToText(@UploadedFile() file: Express.Multer.File) {
+    return await this.resume.documentToText(file);
   }
+
   @Post('/docx-to-pdf')
-  @ApiOperation({ summary: 'Uploads docx file only' })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: FILE_SIZE },
+    }),
+  )
+  @ApiOperation({ summary: 'Only DOCX files are allowed' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: FILE_SIZE } }))
   @ApiBody({
@@ -75,7 +91,7 @@ export class ResumeController {
           type: 'string',
           format: 'binary',
           maxLength: FILE_SIZE,
-          description: 'Maximum file size is 25 MB',
+          description: 'Maximum file size is 2 MB',
         },
       },
     },
