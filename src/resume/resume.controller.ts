@@ -11,7 +11,7 @@ import { MediaService } from 'src/media/media.service';
 
 const FILE_SIZE = 2 * 1024 * 1024;
 
-@ApiTags('resume')
+@ApiTags('resume-analyzer')
 @Controller('resume')
 export class ResumeController {
   constructor(

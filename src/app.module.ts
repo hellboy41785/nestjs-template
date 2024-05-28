@@ -19,6 +19,7 @@ import { BioModule } from './bio/bio.module';
 import { AdminModule } from './admin/admin.module';
 import { ServicesModule } from './services/services.module';
 import { ResumeModule } from './resume/resume.module';
+import { ResumeBuilderModule } from './resume-builder/resume-builder.module';
 
 @Module({
   imports: [
@@ -43,6 +44,8 @@ import { ResumeModule } from './resume/resume.module';
     ServicesModule,
 
     ResumeModule,
+
+    ResumeBuilderModule,
   ],
   controllers: [AppController],
   providers: [
