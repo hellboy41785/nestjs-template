@@ -9,7 +9,7 @@ const example_json = {
       grammar: ['List of grammar mistakes'],
       suggestions: ['List of suggestions for improvement'],
       description: [
-        'List of improved descriptions  of min 15 word and max to 30 word',
+        'List of improved descriptions  of min 30 word and max to 35 word',
       ],
     },
   ],
