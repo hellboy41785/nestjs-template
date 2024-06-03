@@ -225,7 +225,7 @@ You are going to act as a professional resume writer skilled in presenting infor
 Be more strict while scoring resume 
 Ensure the scores reflect the quality of each aspect of the resume, with constructive feedback to help improve each area.
 
-If it is not a valid resume than send json message : {"message":"Invalid resume"}
+If it is not a valid resume than send json message : {"message":"Invalid resume" ,"error":"What is a error"}
 
 
 Provide response in valid json format from the provided resume data
