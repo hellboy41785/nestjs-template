@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -21,6 +21,8 @@ async function bootstrap() {
     }),
   );
   app.enableCors();
-  await app.listen(Number(process.env.PORT || 4242));
+  await app.listen(Number(process.env.PORT || 4242), '0.0.0.0', () =>
+    Logger.log(`server is running on http://localhost:${process.env.PORT}`),
+  );
 }
 bootstrap();
