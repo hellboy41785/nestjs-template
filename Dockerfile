@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run prod:build
 
 FROM node:lts-alpine AS runner
 
