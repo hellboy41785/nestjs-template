@@ -23,8 +23,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /root/careerireland/stag/client && \
+            cd /root/careerireland/stag/api && \
             git pull && \
             cd /root/careerireland/docker/ && \
-            docker compose -f docker-compose-stag.yml build client && \
-            docker compose -f docker-compose-stag.yml up -d --no-deps --force-recreate client && \
+            docker compose -f docker-compose-stag.yml build api && \
+            docker compose -f docker-compose-stag.yml up -d --no-deps --force-recreate api
