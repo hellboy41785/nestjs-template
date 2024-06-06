@@ -1,3 +1,5 @@
+import { missingWords, wordsToAvoid } from 'src/prompts/common/words';
+
 export const user_message = `
 Please review my resume based on the following criteria and provide a score for each subcategory.
 
@@ -218,8 +220,13 @@ Evaluate the resume based on the provided criteria and score each subcategory on
 
 5. **Calculate the overall score of the resume from 100 point**
 6. **Calculate the overall score of the resume for per criteria  from 100 point**
-7. **Provide missing word in resume that should be used in resume and add it in array of missing_word**
-8. **Provide word to avoid in resume that should not be used in resume  and add it in array of word_to_avoid**
+7. **Provide missing word in resume that should be used in resume and add it in array of missing_word  : ${missingWords}**
+8. **Provide word to avoid in resume that should not be used in resume  and add it in array of word_to_avoid : ${wordsToAvoid}**
+Design:
+
+9.Simple design with no pictures or symbols.
+10.Consistent formatting throughout the resume.
+11.Maintain consistency in writing style, tenses, voice, and formatting throughout the document.
 
 You are going to act as a professional resume writer skilled in presenting information concisely and using niche-appropriate language, while avoiding redundancy and cliché terms.
 Be more strict while scoring resume 

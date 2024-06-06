@@ -22,7 +22,7 @@ export class ResumeService {
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4-turbo',
         response_format: { type: 'json_object' },
-
+        temperature: 0,
         messages: [
           {
             role: 'system',
