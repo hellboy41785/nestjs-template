@@ -28,11 +28,12 @@ export class UserService {
       },
     });
 
-    if (user) throw new ConflictException('email duplicated');
+    if (user) throw new ConflictException('User Email already exists');
 
     const newUser = await this.prisma.user.create({
       data: {
         ...dto,
+        provider: 'credentials',
         password: await hash(dto.password, 10),
       },
     });
@@ -97,7 +98,7 @@ export class UserService {
     };
   }
 
-  async otherLogin(dto: CreateUserDto) {
+  async googleLogin(dto: CreateUserDto) {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -105,6 +106,8 @@ export class UserService {
     });
 
     if (user) {
+      if (user.provider === 'credentials')
+        throw new UnauthorizedException('User already exists');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user ?? { password: null };
       const payload = {
@@ -133,6 +136,7 @@ export class UserService {
     const newUser = await this.prisma.user.create({
       data: {
         ...dto,
+        provider: 'google',
       },
     });
     if (!newUser) throw new ConflictException();
@@ -163,7 +167,10 @@ export class UserService {
 
   async validateUser(dto: LoginDto) {
     const user = await this.findByEmail(dto.email);
-
+    if (user.password === null)
+      throw new UnauthorizedException(
+        'Your account was created using a third-party authentication provider (e.g., Google, Facebook). Please log in using the respective provider.',
+      );
     if (user && (await compare(dto.password, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;

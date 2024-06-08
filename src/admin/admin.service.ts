@@ -27,7 +27,7 @@ export class AdminService {
 
     if (user) throw new ConflictException('email duplicated');
 
-    const newUser = await this.prisma.user.create({
+    const newUser = await this.prisma.admin.create({
       data: {
         ...dto,
         password: await hash(dto.password, 10),

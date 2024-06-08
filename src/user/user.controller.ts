@@ -34,9 +34,9 @@ export class UserController {
   async login(@Body() dto: LoginDto) {
     return await this.userService.login(dto);
   }
-  @Post('other-login')
+  @Post('google')
   async otherLogin(@Body() dto: CreateUserDto) {
-    return await this.userService.otherLogin(dto);
+    return await this.userService.googleLogin(dto);
   }
 
   @UseGuards(RefreshJwtGuard)

@@ -20,6 +20,8 @@ import { AdminModule } from './admin/admin.module';
 import { ServicesModule } from './services/services.module';
 import { ResumeModule } from './resume/resume.module';
 import { ResumeBuilderModule } from './resume-builder/resume-builder.module';
+import { APP_FILTER } from '@nestjs/core';
+import { UnknownExceptionFilter } from './error/unknown-exception.filter';
 
 @Module({
   imports: [
@@ -55,6 +57,10 @@ import { ResumeBuilderModule } from './resume-builder/resume-builder.module';
     JwtService,
     OtpService,
     MailerService,
+    {
+      provide: APP_FILTER,
+      useClass: UnknownExceptionFilter,
+    },
   ],
 })
 export class AppModule {}
