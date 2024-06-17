@@ -21,10 +21,18 @@ import {
   system_message_certification,
   user_message_certification,
 } from 'src/prompts/builder/certification';
+import { ResumeService } from 'src/resume/resume.service';
+import {
+  system_resume_extractor,
+  user_resume_extractor,
+} from 'src/prompts/builder/extractor';
 
 @Injectable()
 export class ResumeBuilderService {
-  constructor(private openAIService: OpenAIService) {}
+  constructor(
+    private openAIService: OpenAIService,
+    private resumeService: ResumeService,
+  ) {}
   private openai = this.openAIService.getClient();
   async experience(dto: ExperienceDto[]) {
     const data = await this.chatGpt(
@@ -67,6 +75,16 @@ export class ResumeBuilderService {
       JSON.stringify(dto),
     );
     return data.certifications;
+  }
+
+  async extractor(file: Express.Multer.File) {
+    const resumeInfo = await this.resumeService.documentToText(file);
+    const data = await this.chatGpt(
+      user_resume_extractor,
+      system_resume_extractor,
+      resumeInfo,
+    );
+    return data;
   }
 
   async chatGpt(user: string, system: string, query: any) {
