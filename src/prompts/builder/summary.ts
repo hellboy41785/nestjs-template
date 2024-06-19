@@ -21,7 +21,9 @@ Here is a detailed breakdown of what you need to do:
 
 3. **Suggestions for Improvement**: Provide specific suggestions for improving the bio. This might include rephrasing sentences for clarity, removing redundant information, enhancing action verbs, and ensuring the content aligns with the targeted job role.
 
-4. **Improved Bio**: Rewrite the bio incorporating the suggestions you have provided. The improved bio should be concise, impactful, and free of any grammar mistakes. It should effectively communicate the candidate's qualifications and suitability for the targeted job role in 40-50 words.
+4. **Improved Bio**: Rewrite the bio incorporating the suggestions you have provided. The improved bio should be concise, impactful, and free of any grammar mistakes. It should effectively communicate the candidate's qualifications and suitability for the targeted job role in 60-80 words.
+
+6. Career Bio: Up to 60 words, covering job title, degree, noteworthy projects, major skills, and any awards or achievements or Up to 80 words, covering job title, key experience, key skills, differentiation, and contribution to next company.
 
 If the bio is not in a valid resume format, return the following JSON message:
 \`{"message":"Invalid format","error":"[Describe the error]"}\`
