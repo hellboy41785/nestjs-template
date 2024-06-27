@@ -20,9 +20,9 @@ export class ResumeService {
       const text = await this.documentToText(file);
 
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         response_format: { type: 'json_object' },
-        temperature: 0,
+        temperature: 0.1,
         messages: [
           {
             role: 'system',
@@ -31,9 +31,9 @@ export class ResumeService {
           {
             role: 'user',
             content: `
-             ${text}
-
              ${user_message}
+
+             ${text}
             `,
           },
         ],
