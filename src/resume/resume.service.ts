@@ -20,7 +20,7 @@ export class ResumeService {
       const text = await this.documentToText(file);
 
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4-turbo',
+        model: 'gpt-3.5-turbo',
         response_format: { type: 'json_object' },
         temperature: 0,
         messages: [

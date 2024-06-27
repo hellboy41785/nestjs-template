@@ -50,7 +50,7 @@ const example_json = {
         'Good job quantifying your achievements, but try to include more metrics where possible.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     repetition: {
       score: 7,
@@ -58,7 +58,7 @@ const example_json = {
         'There are a few instances of repeated phrases. Consider varying your language to keep the reader engaged.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     weak_action_verbs: {
       score: 6,
@@ -66,7 +66,7 @@ const example_json = {
         'Some of the action verbs used are not very impactful. Use stronger verbs to better convey your accomplishments.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     tenses: {
       score: 9,
@@ -74,7 +74,7 @@ const example_json = {
         'Your use of tenses is mostly correct, with only a few minor inconsistencies.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     no_responsibilities: {
       score: 8,
@@ -82,14 +82,14 @@ const example_json = {
         'Responsibilities are well defined, but ensure every role includes clear, tangible responsibilities.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     spelling: {
       score: 10,
       feedback: 'No spelling errors detected. Excellent work!',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
   },
   brevity: {
@@ -100,7 +100,7 @@ const example_json = {
         'The resume length is reasonable, but some sections could be more concise.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     total_bullet_points: {
       score: 8,
@@ -108,7 +108,7 @@ const example_json = {
         'The number of bullet points is appropriate, though some could be combined for brevity.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     use_of_bullets: {
       score: 9,
@@ -116,7 +116,7 @@ const example_json = {
         'Great use of bullet points to break down information and enhance readability.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     bullet_point_length: {
       score: 6,
@@ -124,7 +124,7 @@ const example_json = {
         'Some bullet points are too long. Aim for shorter, more concise points.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     filler_words: {
       score: 7,
@@ -132,7 +132,7 @@ const example_json = {
         'A few filler words can be removed to make the content more impactful.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
   },
   style: {
@@ -143,7 +143,7 @@ const example_json = {
         'The sections are well organized, but consider adding more visual distinction between them.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     buzzwords_cliches: {
       score: 6,
@@ -151,21 +151,21 @@ const example_json = {
         'There are some buzzwords and clichés present. Try to use more specific language.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     dates: {
       score: 9,
       feedback: 'Dates are clearly and consistently formatted.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     personal_pronouns: {
       score: 10,
       feedback: 'No personal pronouns used, which is ideal for a resume.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     active_voice: {
       score: 8,
@@ -173,7 +173,7 @@ const example_json = {
         'Mostly active voice is used, but there are a few passive constructions that could be revised.',
       change: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     consistency: {
       score: 9,
@@ -181,7 +181,7 @@ const example_json = {
         'The resume is consistent in formatting and style, with very few deviations.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
   },
   soft_skills: {
@@ -192,7 +192,7 @@ const example_json = {
         'Your communication skills are well demonstrated, but a few points could be clearer.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     analytical: {
       score: 9,
@@ -200,7 +200,7 @@ const example_json = {
         'Strong demonstration of analytical skills through various achievements.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     teamwork: {
       score: 7,
@@ -208,7 +208,7 @@ const example_json = {
         'Teamwork is evident, but consider including more examples of collaborative success.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     leadership: {
       score: 8,
@@ -216,7 +216,7 @@ const example_json = {
         'Good examples of leadership, but a couple more concrete examples would strengthen this section.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
     drive_initiative: {
       score: 9,
@@ -224,7 +224,7 @@ const example_json = {
         'Your drive and initiative are well highlighted throughout the resume.',
       area_for_improvement: 'paragraph to change',
       suggestions: 'List of suggestions for improvement',
-      recommendations: ['improved versions of paragraph'],
+      recommendations: ['multiple improved versions of paragraphs'],
     },
   },
   design: {
