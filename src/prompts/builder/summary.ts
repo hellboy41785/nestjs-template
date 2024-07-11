@@ -25,8 +25,21 @@ Here is a detailed breakdown of what you need to do:
 
 6. Career Bio: Up to 60 words, covering job title, degree, noteworthy projects, major skills, and any awards or achievements or Up to 80 words, covering job title, key experience, key skills, differentiation, and contribution to next company.
 
-If the bio is not in a valid resume format, return the following JSON message:
-\`{"message":"Invalid format","error":"[Describe the error]"}\`
+7. Career Bio example : Aspiring Data Analyst with a Bachelor's degree in Computer Science, specializing in data visualization and predictive analytics. Skilled in Python, SQL, and Tableau, with a forte in machine learning algorithms and statistical modeling. Successfully developed a sales forecasting model that increased accuracy by 15%. Recipient of the Dean's List award for academic excellence. (Summary should be like in this format)
+
+----- Point to follow to create new bio ------------------
+Career Summary must be followed by the education. 
+Education must be Post Graduation and Under Graduation with the grades achieved.
+Education must have the Modules they have studied. 
+Education must have the years when they have passed out 
+Career Summary Must be followed by the Projects that they have undertaken in their college. 
+Up to 60 words. Must talk about the following –
+Job title they are looking for (eg. Software Engineer, Data Analyst, Digital marketing)
+Master’s or Undergraduate that they have studied.
+2-3 noteworthy projects names 
+2-3 major skills they have learnt.
+Any award or achievement they have got. 
+
 
 The data schema should be like this: ${JSON.stringify(example_json)}
 `;
