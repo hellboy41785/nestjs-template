@@ -3,8 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export async function setupDoc(app: INestApplication) {
   const config = new DocumentBuilder()
-    .setTitle('Careerireland')
-    .setDescription('The Careerireland api documentation')
+    .setTitle('Nestjs')
+    .setDescription('The nestjs api documentation')
     .setVersion('1.0')
     .addBearerAuth({
       name: 'Authorization for User',

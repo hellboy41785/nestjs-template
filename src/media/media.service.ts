@@ -29,7 +29,7 @@ export class MediaService {
 
     return {
       status: 'OK',
-      url: `${process.env.SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`,
+      url: `${data.fullPath}`,
     };
   }
   async uploadFiles(files: Array<Express.Multer.File>, folder: string) {
@@ -45,7 +45,7 @@ export class MediaService {
           contentType: file.mimetype,
         })) as IMedia;
       if (error) throw new BadRequestException(error);
-      return `${process.env.SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
+      return `${data.fullPath}`;
     });
 
     const results = await Promise.all(uploadPromises);

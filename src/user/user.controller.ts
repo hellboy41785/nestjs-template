@@ -8,7 +8,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { JwtGuard } from 'src/guards/jwt.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, LoginDto } from './dto/user.dto';
 import { RefreshJwtGuard } from 'src/guards/refresh.guard';
@@ -18,7 +17,7 @@ import { VerifyOtpDto } from 'src/otp/dto/otp.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtGuard)
+  @UseGuards(UseGuards)
   @ApiBearerAuth()
   @Get(':id')
   async getUserProfile(@Param('id') id: string) {

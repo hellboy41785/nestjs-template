@@ -7,9 +7,9 @@ import { CreateUserDto, LoginDto } from './dto/user.dto';
 import { hash } from 'bcrypt';
 import { PrismaService } from 'src/utils/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { VerifyOtpDto } from 'src/otp/dto/otp.dto';
-import { OtpService } from 'src/otp/otp.service';
 import { compare } from 'bcrypt';
+import { OtpService } from 'src/otp/otp.service';
+import { VerifyOtpDto } from 'src/otp/dto/otp.dto';
 
 const EXPIRE_TIME = 20 * 1000;
 
@@ -87,7 +87,7 @@ export class UserService {
       backendTokens: {
         accessToken: await this.jwtService.signAsync(payload, {
           expiresIn: process.env.ACCESS_TOKEN_EXPIRY_DATE,
-          secret: process.env.jwtSecretKey,
+          secret: process.env.jwtUserSecretKey,
         }),
         refreshToken: await this.jwtService.signAsync(payload, {
           expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
@@ -122,7 +122,7 @@ export class UserService {
         backendTokens: {
           accessToken: await this.jwtService.signAsync(payload, {
             expiresIn: process.env.ACCESS_TOKEN_EXPIRY_DATE,
-            secret: process.env.jwtSecretKey,
+            secret: process.env.jwtUserSecretKey,
           }),
           refreshToken: await this.jwtService.signAsync(payload, {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
@@ -154,7 +154,7 @@ export class UserService {
       backendTokens: {
         accessToken: await this.jwtService.signAsync(payload, {
           expiresIn: process.env.ACCESS_TOKEN_EXPIRY_DATE,
-          secret: process.env.jwtSecretKey,
+          secret: process.env.jwtUserSecretKey,
         }),
         refreshToken: await this.jwtService.signAsync(payload, {
           expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
@@ -188,7 +188,7 @@ export class UserService {
     return {
       accessToken: await this.jwtService.signAsync(payload, {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY_DATE,
-        secret: process.env.jwtSecretKey,
+        secret: process.env.jwtUserSecretKey,
       }),
       refreshToken: await this.jwtService.signAsync(payload, {
         expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
