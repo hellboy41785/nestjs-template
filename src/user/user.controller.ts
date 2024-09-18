@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
   Request,
   UseGuards,
@@ -12,16 +11,18 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, LoginDto } from './dto/user.dto';
 import { RefreshJwtGuard } from 'src/guards/refresh.guard';
 import { VerifyOtpDto } from 'src/otp/dto/otp.dto';
+import { UserGuard } from 'src/guards/user.guard';
+import { GetUser } from 'src/decorator/user.decorator';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(UseGuards)
+  @UseGuards(UserGuard)
   @ApiBearerAuth()
-  @Get(':id')
-  async getUserProfile(@Param('id') id: string) {
-    return await this.userService.findById(id);
+  @Get()
+  async getUserProfile(@GetUser() user: IUserPayload) {
+    return await this.userService.findById(user.id);
   }
 
   @Post('register')

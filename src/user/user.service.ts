@@ -11,7 +11,8 @@ import { compare } from 'bcrypt';
 import { OtpService } from 'src/otp/otp.service';
 import { VerifyOtpDto } from 'src/otp/dto/otp.dto';
 
-const EXPIRE_TIME = 20 * 1000;
+const EXPIRE_TIME_5_HOURS = 5 * 60 * 60 * 1000; // 18,000,000 milliseconds (5 hours)
+const EXPIRE_TIME_7_DAYS = 7 * 24 * 60 * 60 * 1000; // 604,800,000 milliseconds (7 days)
 
 @Injectable()
 export class UserService {
@@ -93,7 +94,9 @@ export class UserService {
           expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
           secret: process.env.jwtRefreshTokenKey,
         }),
-        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+        expiresIn: new Date().setTime(
+          new Date().getTime() + EXPIRE_TIME_5_HOURS,
+        ),
       },
     };
   }
@@ -128,7 +131,9 @@ export class UserService {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
             secret: process.env.jwtRefreshTokenKey,
           }),
-          expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+          expiresIn: new Date().setTime(
+            new Date().getTime() + EXPIRE_TIME_5_HOURS,
+          ),
         },
       };
     }
@@ -160,7 +165,9 @@ export class UserService {
           expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
           secret: process.env.jwtRefreshTokenKey,
         }),
-        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+        expiresIn: new Date().setTime(
+          new Date().getTime() + EXPIRE_TIME_5_HOURS,
+        ),
       },
     };
   }
@@ -181,8 +188,11 @@ export class UserService {
 
   async refreshToken(user: any) {
     const payload = {
+      id: user.id,
       email: user.email,
-      sub: user.sub,
+      sub: {
+        name: user.name,
+      },
     };
 
     return {
@@ -194,7 +204,7 @@ export class UserService {
         expiresIn: process.env.REFRESH_TOKEN_EXPIRY_DATE,
         secret: process.env.jwtRefreshTokenKey,
       }),
-      expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+      expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME_7_DAYS),
     };
   }
 
