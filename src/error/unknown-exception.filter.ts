@@ -46,6 +46,6 @@ export class UnknownExceptionFilter extends BaseExceptionFilter {
           : 'An unknown error occurred',
       path: request ? request.url : undefined,
     };
-    response.send(errorResponse);
+    response.status(status).send(errorResponse);
   }
 }
